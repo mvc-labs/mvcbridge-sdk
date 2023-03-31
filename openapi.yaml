@@ -1,0 +1,147 @@
+openapi: 3.0.3
+info:
+  title: MVC Bridge API Spec
+  description: API definition for Mvc Bridge provided apis
+  version: 1.0.0
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+  contact:
+    email: heqiming@metasv.com
+    name: MVC Bridge team
+
+servers:
+  - url: 'https://bridge-api-testnet.metasv.com'
+  - url: 'https://bridge-api-mainnet.metasv.com'
+tags:
+  - name: order
+    description: bridge order related api
+
+paths:
+  /order/{fromChain}/{fromTokenName}/{address}/waiting:
+    get:
+      tags:
+        - order
+      summary: Get the deposits waiting for request.
+      parameters:
+        - name: fromChain
+          in: path
+          description: The public chain of your source address(mvc eth tron bsc ...)
+          required: true
+          schema:
+            type: string
+        - name: fromTokenName
+          in: path
+          description: The token name you sent(usdt usdc ...)
+          required: true
+          schema:
+            type: string
+        - name: address
+          in: path
+          description: The address from which you send your tx. Must be valid source in the transaction.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Result of your orders waiting for request.
+          content:
+            application/json:
+
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderWaiting'
+
+
+  /order/register:
+    post:
+      tags:
+        - order
+      summary: Register a new order to the bridge.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRegisterRequest'
+      responses:
+        '200':
+          description: Result of your order registration.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderRegisterResp'
+
+
+components:
+  securitySchemes:
+    # arbitrary name for the security scheme
+    bearerAuth:
+      type: http
+      scheme: bearer
+      # optional, arbitrary value for documentation purposes
+      bearerFormat: JWT
+  schemas:
+    UnauthorizedError:
+      description: Access token is missing or invalid
+    OrderRegisterRequest:
+      type: object
+      description: Register a bridging request.
+      properties:
+        fromChain:
+          description: The public chain of your source address(mvc eth tron bsc ...)
+          type: string
+        fromTokenName:
+          description: The token name you sent(usdt usdc ...)
+          type: string
+        txid:
+          description: The transaction of your sending request. Must be found on the blockchain to proceed.
+          type: string
+        amount:
+          description: Amount you send, use String for large values.
+          type: string
+        fromAddress:
+          description: The address from which you send your tx. Must be valid source in the transaction.
+          type: string
+        toChain:
+          description: The public chain you want to bridge your asset to (mvc eth tron bsc ...).
+          type: string
+        toTokenName:
+          description: The token name you want to receive(usdt usdc ...)
+          type: string
+        toAddress:
+          description: The address you want to bridge your asset to.
+          type: string
+        signature:
+          description: The signature indicating you are the owner of fromAddress.
+          type: string
+
+    OrderRegisterResp:
+      type: object
+      properties:
+        orderTxid:
+          type: string
+          description: The txid of your request.
+        success:
+          type: boolean
+          description: True if registered successful.
+        message:
+          type: string
+          description: The reason of your failed request.
+
+    OrderWaiting:
+      type: object
+      description: The deposits waiting for request to confirm target.
+      properties:
+        vaultId:
+          type: string
+          description: The vault id of your request.
+        txid:
+          type: string
+          description: The txid of your request.
+        fromAddress:
+          type: string
+          description: The address from which you send your tx. Must be valid source in the transaction.
+        fromAmount:
+          type: string
+          description: Amount you sent, use String for large values.
