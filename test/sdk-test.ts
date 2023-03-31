@@ -42,7 +42,7 @@ describe('mvcbridge-sdk-test', () => {
         // call the api
         orderApi.orderRegisterPost(registerRequest).then((response) => {
             console.log(response);
-        }).catch((error) => {
+        }).catch(() => {
             // ignore
         });
 
