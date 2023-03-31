@@ -9,6 +9,8 @@ describe('mvcbridge-sdk-test', () => {
         // read wif from env
         const wif = process.env.WIF;
 
+        console.assert(wif, "WIF is not set in env")
+
         const orderApi = new OrderApi(undefined, basePath);
         // leaving signature empty for now
         const registerRequest: OrderRegisterRequest = {
