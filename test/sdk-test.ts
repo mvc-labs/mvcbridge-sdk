@@ -40,6 +40,7 @@ describe('mvcbridge-sdk-test', () => {
         const signature = SignatureHelper.signMessageBitcoin(message, wif);
         console.log(signature);
         registerRequest.signature = signature;
+        console.log(registerRequest);
 
         // call the api
         orderApi.orderRegisterPost(registerRequest).then((response) => {
