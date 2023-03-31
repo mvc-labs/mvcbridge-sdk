@@ -1,6 +1,6 @@
 {
   "name": "mvcbridge-sdk",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "OpenAPI client for mvcbridge-sdk",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "elliptic": "^6.5.4",
     "meta-contract": "^0.3.25"
   },
   "devDependencies": {

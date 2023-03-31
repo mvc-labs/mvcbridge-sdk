@@ -30,12 +30,15 @@ describe('mvcbridge-sdk-test', () => {
         console.log(message)
         // sign the message
         // if your source chain is eth (ie using metamask), please sign the message using personal_sign
+        // don't forget the prefix
         // const signature = SIGNATURE_FROM_ETH_WALLET;
         // https://docs.metamask.io/guide/signing-data.html
         // if your source chain is mvc (ie using metalet), you can use this sdk to sign the message
         // set the signature
-        registerRequest.signature = SignatureHelper.signMessageBitcoin(message, wif);
-        console.log(registerRequest);
+        const signature = SignatureHelper.signMessageBitcoin(message, wif);
+        console.log(signature);
+        registerRequest.signature = signature;
+
         // call the api
         orderApi.orderRegisterPost(registerRequest).then((response) => {
             console.log(response);

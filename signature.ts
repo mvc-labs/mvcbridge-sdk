@@ -1,8 +1,5 @@
 import {OrderRegisterRequest} from "./api";
-import {Networks, PrivateKey} from "meta-contract/dist/mvc";
-import {mvc} from "meta-contract";
-import testnet = Networks.testnet;
-
+import {Message, PrivateKey} from "meta-contract/dist/mvc";
 
 export const MESSAGE_DIVIDER = "_";
 
@@ -36,14 +33,15 @@ export class SignatureHelper {
 
     /**
      * Sign the message using the private key, this can be used to sign the message for bitcoin like blockchains
+     * Signing using standard bitcoin message with prefix
+     * '\x18Bitcoin Signed Message:\n' + message.length + message
+     *
      * @param message message to sign
      * @param privateKeyWif your private key in WIF format
      */
     public static signMessageBitcoin(message: string, privateKeyWif: string): string {
         const privateKey = PrivateKey.fromWIF(privateKeyWif);
-        console.log(privateKey.toAddress('testnet').toString())
-        const hash = mvc.crypto.Hash.sha256sha256(Buffer.from(message))
-        return Buffer.from(mvc.crypto.ECDSA.sign(hash, privateKey).toDER()).toString("base64");
-
+        return Message.sign(message, privateKey)
     }
+
 }
