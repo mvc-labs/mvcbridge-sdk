@@ -1,5 +1,28 @@
 ## mvcbridge-sdk@1.0.0
 
+### Usage
+
+This is the sdk for sending request to mvcbridge, follow these steps to transform your asset through mvcbridge.
+
+1. Build and send on-chain transaction using your own wallet client instance(ie. metalet, metamask). Save the transaction hash.
+2. Use this sdk to generate a transfer request and sign the request content.
+3. Send the signed request to mvcbridge server.
+
+### Example
+
+```typescript
+import {MvcBridgeSdk} from 'mvcbridge-sdk';
+import {OrderApi} from "./api";
+
+// 1. Build and send on-chain transaction using your own wallet client instance(ie. metalet, metamask). Save the transaction hash.
+// todo: build and send on-chain transaction(ie. metalet, metamask)
+
+// 2. Use this sdk to generate a transfer request and sign the request content.
+const orderApi = new OrderApi();
+```
+
+
+### Openapi generator
 This generator creates TypeScript/JavaScript client that utilizes [axios](https://github.com/axios/axios). The generated Node module can be used in the following environments:
 
 Environment
