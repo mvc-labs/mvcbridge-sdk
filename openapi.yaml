@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: MVC Bridge API Spec
   description: API definition for Mvc Bridge provided apis
-  version: 1.0.0
+  version: 1.0.1
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
@@ -18,6 +18,32 @@ tags:
     description: bridge order related api
 
 paths:
+  /order/{fromChain}/{fromTokenName}/deposit/address:
+    get:
+      tags:
+        - order
+      summary: Get the deposit address for the token.
+      parameters:
+        - name: fromChain
+          in: path
+          description: The public chain of your source address(mvc eth tron bsc ...)
+          required: true
+          schema:
+            type: string
+        - name: fromTokenName
+          in: path
+          description: The token name you sent(usdt usdc ...)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Result of your deposit address.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DepositAddressResponse'
+
   /order/{fromChain}/{fromTokenName}/{address}/waiting:
     get:
       tags:
@@ -84,6 +110,19 @@ components:
   schemas:
     UnauthorizedError:
       description: Access token is missing or invalid
+    DepositAddressResponse:
+      type: object
+      description: The deposit address for the token.
+      properties:
+        address:
+          description: The deposit address for the token.
+          type: string
+        chain:
+          description: The public chain of your source address(mvc eth tron bsc ...)
+          type: string
+        tokenName:
+          description: The token name you sent(usdt usdc ...)
+          type: string
     OrderRegisterRequest:
       type: object
       description: Register a bridging request.
