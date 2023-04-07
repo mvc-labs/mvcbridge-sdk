@@ -25,3 +25,4 @@
 .gitignore
 README.md
 package.json
+tsconfig.json
