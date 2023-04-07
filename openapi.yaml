@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: MVC Bridge API Spec
   description: API definition for Mvc Bridge provided apis
-  version: 1.0.1
+  version: 1.0.3
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
