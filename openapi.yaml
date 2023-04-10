@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: MVC Bridge API Spec
   description: API definition for Mvc Bridge provided apis
-  version: 1.0.4
+  version: 1.0.5
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
@@ -123,6 +123,16 @@ components:
         tokenName:
           description: The token name you sent(usdt usdc ...)
           type: string
+        decimal:
+          description: The decimal of the token.
+          type: integer
+        minAmount:
+            description: The minimum amount of the token to deposit, if deposit amount is lower than this, it will not be processed.
+            type: integer
+            format: int64
+        confirmation:
+            description: The confirmation needed for the deposit transaction.
+            type: integer
     OrderRegisterRequest:
       type: object
       description: Register a bridging request.
