@@ -51,7 +51,7 @@ console.log(message)
 // https://docs.metamask.io/guide/signing-data.html
 // if your source chain is mvc (ie using metalet), you can use this sdk to sign the message
 // set the signature
-const signature = SignatureHelper.signMessageBitcoin(message, wif);
+const signature = SignatureHelper.signMessageBitcoin(message, wif, "testnet");
 console.log(signature);
 registerRequest.signature = signature;
 
