@@ -1,7 +1,9 @@
 import {OrderRegisterRequest} from "./api";
-import {Message, PrivateKey} from "meta-contract/dist/mvc";
 
 export const MESSAGE_DIVIDER = "_";
+
+const bitcoin = require('bitcoinjs-lib'); // v4.x.x
+const bitcoinMessage = require('bitcoinjs-message');
 
 export class SignatureHelper {
 
@@ -38,10 +40,17 @@ export class SignatureHelper {
      *
      * @param message message to sign
      * @param privateKeyWif your private key in WIF format
+     * @param network 'mainnet' or 'testnet'
      */
-    public static signMessageBitcoin(message: string, privateKeyWif: string): string {
-        const privateKey = PrivateKey.fromWIF(privateKeyWif);
-        return Message.sign(message, privateKey)
+    public static signMessageBitcoin(message: string, privateKeyWif: string, network: string): string {
+        let keyPair
+        if (network === 'mainnet') {
+            keyPair = bitcoin.ECPair.fromWIF(privateKeyWif, bitcoin.networks.bitcoin);
+        } else {
+            keyPair = bitcoin.ECPair.fromWIF(privateKeyWif, bitcoin.networks.testnet);
+        }
+        const privateKey = keyPair.privateKey;
+        const signature = bitcoinMessage.sign(message, privateKey, keyPair.compressed)
+        return signature.toString('base64')
     }
-
 }

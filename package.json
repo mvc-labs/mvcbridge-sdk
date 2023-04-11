@@ -1,6 +1,6 @@
 {
   "name": "mvcbridge-sdk",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "OpenAPI client for mvcbridge-sdk",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [
@@ -20,7 +20,8 @@
   },
   "dependencies": {
     "axios": "^0.21.2",
-    "meta-contract": "^0.3.25"
+    "bitcoinjs-lib": "4.0.5",
+    "bitcoinjs-message": "^2.2.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.4",
