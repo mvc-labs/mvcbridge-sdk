@@ -1,4 +1,4 @@
-## mvcbridge-sdk@1.0.6
+## mvcbridge-sdk@1.0.7
 
 ### Usage
 

@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: MVC Bridge API Spec
   description: API definition for Mvc Bridge provided apis
-  version: 1.0.5
+  version: 1.0.7
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
@@ -14,15 +14,43 @@ servers:
   - url: 'https://bridge-api-testnet.metasv.com'
   - url: 'https://bridge-api-mainnet.metasv.com'
 tags:
+  - name: vault
+    description: Vault is the place you send your assets to or receive your assets from.
   - name: order
     description: bridge order related api
 
 paths:
-  /order/{fromChain}/{fromTokenName}/deposit/address:
+  /vault/{chainName}/{tokenName}/info:
+    get:
+      tags:
+        - vault
+      summary: Get the vault info for the token.
+      parameters:
+        - name: chainName
+          in: path
+          description: The public chain of your source address(mvc eth tron bsc ...)
+          required: true
+          schema:
+            type: string
+        - name: tokenName
+          in: path
+          description: The token name you sent(usdt usdc ...)
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Result of your vault info.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VaultInfoResponse'
+
+  /order/{fromChain}/{fromTokenName}/{address}/pending:
     get:
       tags:
         - order
-      summary: Get the deposit address for the token.
+      summary: Get the deposits waiting for request or not processed yet.
       parameters:
         - name: fromChain
           in: path
@@ -36,15 +64,23 @@ paths:
           required: true
           schema:
             type: string
+        - name: address
+          in: path
+          description: The address from which you send your tx. Must be valid source in the transaction.
+          required: true
+          schema:
+            type: string
       responses:
         '200':
-          description: Result of your deposit address.
+          description: Result of your orders waiting for request.
           content:
             application/json:
-              schema:
-                $ref: '#/components/schemas/DepositAddressResponse'
 
-  /order/{fromChain}/{fromTokenName}/{address}/waiting:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderPending'
+  /order/{fromChain}/{fromTokenName}/{address}/finalized:
     get:
       tags:
         - order
@@ -77,7 +113,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/OrderWaiting'
+                  $ref: '#/components/schemas/OrderFinalized'
 
 
   /order/register:
@@ -110,12 +146,12 @@ components:
   schemas:
     UnauthorizedError:
       description: Access token is missing or invalid
-    DepositAddressResponse:
+    VaultInfoResponse:
       type: object
-      description: The deposit address for the token.
+      description: The  vault info for the token.
       properties:
         address:
-          description: The deposit address for the token.
+          description: The deposit address for the vault.
           type: string
         chain:
           description: The public chain of your source address(mvc eth tron bsc ...)
@@ -126,13 +162,20 @@ components:
         decimal:
           description: The decimal of the token.
           type: integer
-        minAmount:
+        depositMinAmount:
             description: The minimum amount of the token to deposit, if deposit amount is lower than this, it will not be processed.
             type: integer
             format: int64
-        confirmation:
+        depositConfirmation:
             description: The confirmation needed for the deposit transaction.
             type: integer
+        withdrawGasFee:
+            description: Gas fee to cover onchain transfer. AmountYouReceive = amountYouSent - withdrawGasFee - withdrawBridgeFeeRate * amountYouSend
+            type: integer
+            format: int64
+        withdrawBridgeFeeRate:
+            description: The service fee rate of bridge. AmountYouReceive = amountYouSent - withdrawGasFee - withdrawBridgeFeeRate * amountYouSend
+            type: string
     OrderRegisterRequest:
       type: object
       description: Register a bridging request.
@@ -178,7 +221,7 @@ components:
           type: string
           description: The reason of your failed request.
 
-    OrderWaiting:
+    OrderPending:
       type: object
       description: The deposits waiting for request to confirm target.
       properties:
@@ -206,3 +249,44 @@ components:
         targetAmount:
           type: string
           description: Amount you can receive after the fee, use String for large values.
+        confirmationRequired:
+          type: integer
+          description: The confirmation needed for the deposit transaction.
+        currentConfirmation:
+          type: integer
+          description: The current confirmation of the deposit transaction.
+    OrderFinalized:
+      type: object
+      description: The deposits waiting for request to confirm target.
+      properties:
+        vaultId:
+          type: string
+          description: The vault id of your request.
+        txid:
+          type: string
+          description: The txid of your request.
+        finalizedTimestamp:
+          type: integer
+          format: int64
+          description: The time when your request finalize.
+        fromAddress:
+          type: string
+          description: The address from which you send your tx. Must be valid source in the transaction.
+        fromAmount:
+          type: string
+          description: Amount you sent, use String for large values.
+        state:
+          type: string
+          description: State of your order(SUCCESS, DROPPED, MINIMUM_NOT_MET).
+        targetVaultId:
+          type: string
+          description: The vault id of your target request.
+        toAddress:
+          type: string
+          description: The address you want to bridge your asset to.
+        targetAmount:
+          type: string
+          description: Amount you can receive after the fee, use String for large values.
+        processTxid:
+          type: string
+          description: The txid of the transaction that processed your request.
