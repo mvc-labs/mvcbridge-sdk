@@ -1,9 +1,9 @@
 import {OrderRegisterRequest} from "./api";
+import * as bitcoin from 'bitcoinjs-lib'
+import * as bitcoinMessage from 'bitcoinjs-message'
 
 export const MESSAGE_DIVIDER = "_";
 
-const bitcoin = require('bitcoinjs-lib'); // v4.x.x
-const bitcoinMessage = require('bitcoinjs-message');
 
 export class SignatureHelper {
 
