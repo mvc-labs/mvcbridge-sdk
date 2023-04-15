@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: MVC Bridge API Spec
   description: API definition for Mvc Bridge provided apis
-  version: 1.0.9
+  version: 1.0.10
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
@@ -11,8 +11,8 @@ info:
     name: MVC Bridge team
 
 servers:
-  - url: 'https://bridge-api-testnet.metasv.com'
-  - url: 'https://bridge-api-mainnet.metasv.com'
+  - url: 'https://testnet.mvcbridge.com'
+  - url: 'https://mainnet.mvcbridge.com'
 tags:
   - name: vault
     description: Vault is the place you send your assets to or receive your assets from.
