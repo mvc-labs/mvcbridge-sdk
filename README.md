@@ -1,4 +1,4 @@
-## mvcbridge-sdk@1.0.11
+## mvcbridge-sdk@1.0.12
 
 ### Usage
 
@@ -101,7 +101,7 @@ navigate to the folder of your consuming project and run one of the following co
 _published:_
 
 ```
-npm install mvcbridge-sdk@1.0.0 --save
+npm install mvcbridge-sdk@1.0.12 --save
 ```
 
 _unPublished (not recommended):_
