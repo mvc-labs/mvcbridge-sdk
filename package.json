@@ -1,6 +1,6 @@
 {
   "name": "mvcbridge-sdk",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "OpenAPI client for mvcbridge-sdk",
   "author": "OpenAPI-Generator Contributors",
   "keywords": [

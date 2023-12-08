@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: MVC Bridge API Spec
   description: API definition for Mvc Bridge provided apis
-  version: 1.0.11
+  version: 1.0.12
   license:
     name: MIT License
     url: https://opensource.org/licenses/MIT
@@ -70,6 +70,18 @@ paths:
           required: true
           schema:
             type: string
+        - name: targetChain
+          in: query
+          description: (optional) filter result by target chain.
+          required: false
+          schema:
+            type: string
+        - name: targetTokenName
+          in: query
+          description: (optional) filter result by target token name.
+          required: false
+          schema:
+            type: string
       responses:
         '200':
           description: Result of your orders waiting for request.
@@ -102,6 +114,18 @@ paths:
           in: path
           description: The address from which you send your tx. Must be valid source in the transaction.
           required: true
+          schema:
+            type: string
+        - name: targetChain
+          in: query
+          description: (optional) filter result by target chain.
+          required: false
+          schema:
+            type: string
+        - name: targetTokenName
+          in: query
+          description: (optional) filter result by target token name.
+          required: false
           schema:
             type: string
       responses:
